@@ -5,11 +5,25 @@ import {
   GatewayIntentBits,
 } from "discord.js";
 
+import Express from "express"
+
 import { config } from "dotenv";
 
 import Commands from "./lib/Commands";
 
 config();
+
+// ? This part is for hosting on replit.com
+
+const express = Express()
+
+express.listen(process.env.PORT || 3000, () => {
+  console.log('Server Ready.');
+});
+
+express.get("/", (_, res) => {
+  res.status(200).send("OK")
+})
 
 const client = new Client({
   intents: [GatewayIntentBits.Guilds],
