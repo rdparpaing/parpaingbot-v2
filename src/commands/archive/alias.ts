@@ -2,7 +2,7 @@ import { ChatInputCommandInteraction, Attachment } from "discord.js";
 
 import { isNull } from "underscore";
 
-import supabase from "../../lib/supabase";
+import supabase from "../../lib/supabase.js";
 
 export default async function (interaction: ChatInputCommandInteraction) {
   const id = interaction.options.get("id", true).value;

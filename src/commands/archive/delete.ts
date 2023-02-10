@@ -2,7 +2,7 @@ import { ChatInputCommandInteraction, Attachment } from "discord.js";
 
 import { isNull } from "underscore";
 
-import supabase from "../../lib/supabase";
+import supabase from "../../lib/supabase.js";
 
 export default async function (interaction: ChatInputCommandInteraction) {
   const id = interaction.options.get("id", true).value;
@@ -18,7 +18,7 @@ export default async function (interaction: ChatInputCommandInteraction) {
 
   }
 
-  if (res.status != 204 || isNull(res.data)) {
+  if (res.status != 204) {
     await interaction.reply("❌ Une erreur s'est produite (<@!677511817085452289>).")
     return;
   }

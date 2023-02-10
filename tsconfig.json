@@ -1,11 +1,11 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "module": "nodenext",
+    "module": "ESNext",
     "rootDir": "./src/",
     "outDir": "./dist/",
     "strict": true,
-    "moduleResolution": "node",
+    "moduleResolution": "node", 
     "importHelpers": true,
     "experimentalDecorators": true,
     "esModuleInterop": true,
@@ -16,9 +16,10 @@
     "removeComments": true,
     "typeRoots": ["node_modules/@types"],
     "sourceMap": false,
-    "baseUrl": "./"
+    "baseUrl": "./",
+    
   },
   "files": ["src/index.ts"],
-  "include": ["./**/*.ts"],
+  "include": ["./**/*.ts", "./public/*.json", "cts"],
   "exclude": ["node_modules", "dist"]
 }

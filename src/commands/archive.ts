@@ -5,11 +5,14 @@ import {
   SlashCommandSubcommandGroupBuilder 
 } from "discord.js";
 
-import fetch from "./archive/fetch";
-import create from "./archive/create";
-import random from "./archive/random";
-import __delete from "./archive/delete";
-import _alias from "./archive/alias";
+import fetch from "./archive/fetch.js";
+import create from "./archive/create.js";
+import random from "./archive/random.js";
+import __delete from "./archive/delete.js";
+import _alias from "./archive/alias.js";
+
+import commands from "../public/strings.js"
+const { archive } = commands.commands
 
 async function execute(interaction: ChatInputCommandInteraction) {
   const sub = interaction.options.getSubcommand()
@@ -36,26 +39,26 @@ async function execute(interaction: ChatInputCommandInteraction) {
 const get = (g: SlashCommandSubcommandGroupBuilder): SlashCommandSubcommandGroupBuilder => (
   g
    .setName("get")
-   .setDescription("Recherches dans l'archive")
+   .setDescription(archive.subc.get.desc)
    .addSubcommand(s => (
     s
      .setName("fetch")
-     .setDescription("Cherche un post avec son ID/alias.")
+     .setDescription(archive.subc.fetch.desc)
      .addStringOption((o) =>
         o
          .setName("référence")
-         .setDescription("La référence du post à chercher.")
+         .setDescription(archive.subc.fetch.options.référence)
          .setRequired(true)
       )
    ))
    .addSubcommand(s => (
     s
      .setName("random")
-     .setDescription("Renvoie un post aléatoire selon un tag.")
+     .setDescription(archive.subc.random.desc)
      .addStringOption((o) =>
         o
          .setName("tag")
-         .setDescription("Le tag à parcourir.")
+         .setDescription(archive.subc.random.options.tag)
       )
    ))
 )
@@ -63,38 +66,38 @@ const get = (g: SlashCommandSubcommandGroupBuilder): SlashCommandSubcommandGroup
 const _create =  (s: SlashCommandSubcommandBuilder): SlashCommandSubcommandBuilder => (
   s
   .setName("create")
-  .setDescription("Créée un post. (Il faut ajouter au moins un commentaire ou un fichier)")
+  .setDescription(archive.subc.create.desc)
   .addStringOption(o =>(
     o
      .setName("tag")
-     .setDescription("La catégorie dans laquelle le post doit être rangé.")
+     .setDescription(archive.subc.create.options.tag)
      .setRequired(true)
   ))
   .addAttachmentOption(o => (
     o
      .setName("fichier")
-     .setDescription("Le fichier à stocker.")
+     .setDescription(archive.subc.create.options.fichier)
   ))
   .addStringOption(o => (
     o
      .setName("commentaire")
-     .setDescription("Le commentaire à ajouter.")
+     .setDescription(archive.subc.create.options.commentaire)
   ))
   .addStringOption(o => (
     o
      .setName("alias")
-     .setDescription("Un petit nom pour retrouver le post plus facilement.")
+     .setDescription(archive.subc.create.options.alias)
   ))
 )
 
 const _delete = (s: SlashCommandSubcommandBuilder): SlashCommandSubcommandBuilder => (
   s
   .setName("delete")
-  .setDescription("Supprime un post.")
+  .setDescription(archive.subc.delete.desc)
   .addNumberOption((o) =>
      o
       .setName("id")
-      .setDescription("L'ID du post à supprimer.")
+      .setDescription(archive.subc.delete.options.id)
       .setRequired(true)
    )
 )
@@ -102,25 +105,25 @@ const _delete = (s: SlashCommandSubcommandBuilder): SlashCommandSubcommandBuilde
 const alias =  (s: SlashCommandSubcommandBuilder): SlashCommandSubcommandBuilder => (
   s
   .setName("alias")
-  .setDescription("Associe à un post un alias (peut être réécrit).")
+  .setDescription(archive.subc.alias.desc)
   .addNumberOption((o) =>
      o
       .setName("id")
-      .setDescription("L'ID du post à associer.")
+      .setDescription(archive.subc.alias.options.id)
       .setRequired(true)
    )
    .addStringOption((o) =>
      o
       .setName("alias")
-      .setDescription("Le petit nom du post.")
+      .setDescription(archive.subc.alias.options.alias)
       .setRequired(true)
    )
 )
   
-const ping = {
+const _archive = {
   data: new SlashCommandBuilder()
     .setName("archive")
-    .setDescription("Actions sur l'archive de RdP.")
+    .setDescription(archive.desc)
     .addSubcommandGroup(get)
     .addSubcommand(_create)
     .addSubcommand(_delete)
@@ -128,4 +131,4 @@ const ping = {
   execute,
 };
 
-export default ping;
+export default _archive;

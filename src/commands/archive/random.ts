@@ -1,10 +1,10 @@
 import { CommandInteraction } from "discord.js";
-import { Post } from "src/lib/posts";
+import { Post } from "src/lib/posts.js";
 
 import { isNull } from "underscore";
-import { send } from "../../lib/posts";
+import { send } from "../../lib/posts.js";
 
-import supabase from "../../lib/supabase";
+import supabase from "../../lib/supabase.js";
 
 export default async function (interaction: CommandInteraction) {
   const tag = interaction.options.get("tag", false)?.value;

@@ -2,7 +2,7 @@ import { ChatInputCommandInteraction, Attachment } from "discord.js";
 
 import { isNull } from "underscore";
 
-import supabase from "../../lib/supabase";
+import supabase from "../../lib/supabase.js";
 
 async function repostAttachment(file: Attachment | null, interaction: ChatInputCommandInteraction): Promise<string> {
   if (isNull(file)) return "";
