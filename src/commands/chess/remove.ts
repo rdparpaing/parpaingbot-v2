@@ -15,5 +15,5 @@ export default async function (interaction: ChatInputCommandInteraction) {
   }
 
   // @ts-ignore
-  await interaction.reply(`✅ Le post a été supprimé !`);
+  await interaction.reply(`✅ La partie a été supprimé !`);
 }

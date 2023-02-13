@@ -1,13 +1,8 @@
-import {
-  Client,
-  Collection,
-  Events,
-  GatewayIntentBits,
-} from "discord.js";
+import { Client, Collection, Events, GatewayIntentBits } from "discord.js";
 
 import { config } from "dotenv";
 
-import Commands from "./lib/Commands";
+import Commands from "./lib/Commands.js";
 
 config();
 

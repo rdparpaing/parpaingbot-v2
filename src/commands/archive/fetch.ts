@@ -11,25 +11,16 @@ export default async function (interaction: CommandInteraction) {
 
   let post: Post[] | null = null;
 
-  if (isNaN(parseInt(ref?.toString()||"a"))) {
+  if (isNaN(parseInt(ref?.toString() || "a"))) {
     post = (
-      await supabase
-        .from("archive")
-        .select("*")
-        .eq("alias", ref)
-        .limit(1)
+      await supabase.from("archive").select("*").eq("alias", ref).limit(1)
     ).data;
   } else {
-    post = (
-      await supabase
-        .from("archive")
-        .select("*")
-        .eq("id", ref)
-        .limit(1)
-    ).data;
+    post = (await supabase.from("archive").select("*").eq("id", ref).limit(1))
+      .data;
   }
 
-  if (isNull(post)||!post) {
+  if (isNull(post) || !post) {
     await interaction.reply("❌ Le post n'existe pas.");
     return;
   }

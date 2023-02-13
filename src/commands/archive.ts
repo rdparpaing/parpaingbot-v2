@@ -1,8 +1,8 @@
-import { 
-  ChatInputCommandInteraction, 
-  SlashCommandBuilder, 
+import {
+  ChatInputCommandInteraction,
+  SlashCommandBuilder,
   SlashCommandSubcommandBuilder,
-  SlashCommandSubcommandGroupBuilder 
+  SlashCommandSubcommandGroupBuilder,
 } from "discord.js";
 
 import fetch from "./archive/fetch.js";
@@ -11,11 +11,11 @@ import random from "./archive/random.js";
 import __delete from "./archive/delete.js";
 import _alias from "./archive/alias.js";
 
-import commands from "../public/strings.js"
-const { archive } = commands.commands
+import commands from "../public/strings.js";
+const { archive } = commands.commands;
 
 async function execute(interaction: ChatInputCommandInteraction) {
-  const sub = interaction.options.getSubcommand()
+  const sub = interaction.options.getSubcommand();
 
   switch (sub) {
     case "fetch":
@@ -36,90 +36,88 @@ async function execute(interaction: ChatInputCommandInteraction) {
   }
 }
 
-const get = (g: SlashCommandSubcommandGroupBuilder): SlashCommandSubcommandGroupBuilder => (
+const get = (
+  g: SlashCommandSubcommandGroupBuilder
+): SlashCommandSubcommandGroupBuilder =>
   g
-   .setName("get")
-   .setDescription(archive.subc.get.desc)
-   .addSubcommand(s => (
-    s
-     .setName("fetch")
-     .setDescription(archive.subc.fetch.desc)
-     .addStringOption((o) =>
-        o
-         .setName("référence")
-         .setDescription(archive.subc.fetch.options.référence)
-         .setRequired(true)
-      )
-   ))
-   .addSubcommand(s => (
-    s
-     .setName("random")
-     .setDescription(archive.subc.random.desc)
-     .addStringOption((o) =>
-        o
-         .setName("tag")
-         .setDescription(archive.subc.random.options.tag)
-      )
-   ))
-)
+    .setName("get")
+    .setDescription(archive.subc.get.desc)
+    .addSubcommand((s) =>
+      s
+        .setName("fetch")
+        .setDescription(archive.subc.fetch.desc)
+        .addStringOption((o) =>
+          o
+            .setName("référence")
+            .setDescription(archive.subc.fetch.options.référence)
+            .setRequired(true)
+        )
+    )
+    .addSubcommand((s) =>
+      s
+        .setName("random")
+        .setDescription(archive.subc.random.desc)
+        .addStringOption((o) =>
+          o.setName("tag").setDescription(archive.subc.random.options.tag)
+        )
+    );
 
-const _create =  (s: SlashCommandSubcommandBuilder): SlashCommandSubcommandBuilder => (
+const _create = (
+  s: SlashCommandSubcommandBuilder
+): SlashCommandSubcommandBuilder =>
   s
-  .setName("create")
-  .setDescription(archive.subc.create.desc)
-  .addStringOption(o =>(
-    o
-     .setName("tag")
-     .setDescription(archive.subc.create.options.tag)
-     .setRequired(true)
-  ))
-  .addAttachmentOption(o => (
-    o
-     .setName("fichier")
-     .setDescription(archive.subc.create.options.fichier)
-  ))
-  .addStringOption(o => (
-    o
-     .setName("commentaire")
-     .setDescription(archive.subc.create.options.commentaire)
-  ))
-  .addStringOption(o => (
-    o
-     .setName("alias")
-     .setDescription(archive.subc.create.options.alias)
-  ))
-)
+    .setName("create")
+    .setDescription(archive.subc.create.desc)
+    .addStringOption((o) =>
+      o
+        .setName("tag")
+        .setDescription(archive.subc.create.options.tag)
+        .setRequired(true)
+    )
+    .addAttachmentOption((o) =>
+      o.setName("fichier").setDescription(archive.subc.create.options.fichier)
+    )
+    .addStringOption((o) =>
+      o
+        .setName("commentaire")
+        .setDescription(archive.subc.create.options.commentaire)
+    )
+    .addStringOption((o) =>
+      o.setName("alias").setDescription(archive.subc.create.options.alias)
+    );
 
-const _delete = (s: SlashCommandSubcommandBuilder): SlashCommandSubcommandBuilder => (
+const _delete = (
+  s: SlashCommandSubcommandBuilder
+): SlashCommandSubcommandBuilder =>
   s
-  .setName("delete")
-  .setDescription(archive.subc.delete.desc)
-  .addNumberOption((o) =>
-     o
-      .setName("id")
-      .setDescription(archive.subc.delete.options.id)
-      .setRequired(true)
-   )
-)
+    .setName("delete")
+    .setDescription(archive.subc.delete.desc)
+    .addNumberOption((o) =>
+      o
+        .setName("id")
+        .setDescription(archive.subc.delete.options.id)
+        .setRequired(true)
+    );
 
-const alias =  (s: SlashCommandSubcommandBuilder): SlashCommandSubcommandBuilder => (
+const alias = (
+  s: SlashCommandSubcommandBuilder
+): SlashCommandSubcommandBuilder =>
   s
-  .setName("alias")
-  .setDescription(archive.subc.alias.desc)
-  .addNumberOption((o) =>
-     o
-      .setName("id")
-      .setDescription(archive.subc.alias.options.id)
-      .setRequired(true)
-   )
-   .addStringOption((o) =>
-     o
-      .setName("alias")
-      .setDescription(archive.subc.alias.options.alias)
-      .setRequired(true)
-   )
-)
-  
+    .setName("alias")
+    .setDescription(archive.subc.alias.desc)
+    .addNumberOption((o) =>
+      o
+        .setName("id")
+        .setDescription(archive.subc.alias.options.id)
+        .setRequired(true)
+    )
+    .addStringOption((o) =>
+      o
+        .setName("alias")
+        .setDescription(archive.subc.alias.options.alias)
+        .setRequired(true)
+    );
+
 const _archive = {
   data: new SlashCommandBuilder()
     .setName("archive")

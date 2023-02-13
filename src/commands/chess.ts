@@ -1,43 +1,133 @@
-import { 
-  ChatInputCommandInteraction, 
-  SlashCommandBuilder, 
+import {
+  ChatInputCommandInteraction,
+  SlashCommandBuilder,
   SlashCommandSubcommandBuilder,
-  SlashCommandSubcommandGroupBuilder 
+  SlashCommandSubcommandGroupBuilder,
 } from "discord.js";
 
-import fetch from "./archive/fetch.js";
-import create from "./archive/create.js";
-import random from "./archive/random.js";
-import __delete from "./archive/delete.js";
-import _alias from "./archive/alias.js";
+import makeGif from "./chess/makeGif.js";
+import add from "./chess/add.js";
+import remove from "./chess/remove.js";
+import fetch from "./chess/fetch.js";
+import fetchUser from "./chess/fetchUser.js";
+
+import commands from "../public/strings.js";
+const { chess } = commands.commands;
 
 async function execute(interaction: ChatInputCommandInteraction) {
-  const sub = interaction.options.getSubcommand()
+  const sub = interaction.options.getSubcommand();
 
   switch (sub) {
     case "make-gif":
+      await makeGif(interaction);
+      break;
+    case "add":
+      await add(interaction);
+      break;
+    case "remove":
+      await remove(interaction);
+      break;
+    case "game":
+      await fetch(interaction);
+      break;
+    case "user":
+      await fetchUser(interaction);
       break;
   }
 }
 
-const make_gif = (s: SlashCommandSubcommandBuilder): SlashCommandSubcommandBuilder => (
+const make_gif = (
+  s: SlashCommandSubcommandBuilder
+): SlashCommandSubcommandBuilder =>
   s
-   .setName("make-gif")
-   .setDescription("Crée un GIF à partir d'un PGN et l'envoie dans le chat.")
-   .addStringOption(o => 
-    o
-     .setName("PGN")
-     .setDescription("Le PGN de la partie à gérer")
-     .setRequired(true)
+    .setName("make-gif")
+    .setDescription(chess.subc.makeGif.desc)
+    .addStringOption((o) =>
+      o
+        .setName("pgn")
+        .setDescription(chess.subc.makeGif.options.pgn)
+        .setRequired(true)
+    );
+const _add = (
+  s: SlashCommandSubcommandBuilder
+): SlashCommandSubcommandBuilder =>
+  s
+    .setName("add")
+    .setDescription(chess.subc.add.desc)
+    .addStringOption((o) =>
+      o
+        .setName("lien")
+        .setDescription(chess.subc.add.options.lien)
+        .setRequired(true)
     )
-)
+    .addNumberOption((o) =>
+      o
+        .setName("résultat")
+        .setDescription(chess.subc.add.options.résultat)
+        .addChoices(
+          { name: "1-0", value: 1 },
+          { name: "0-1", value: 0 },
+          { name: "½-½", value: 0.5 }
+        )
+        .setRequired(true)
+    )
+    .addUserOption((o) =>
+      o.setName("blancs").setDescription(chess.subc.add.options.blancs)
+    )
+    .addUserOption((o) =>
+      o.setName("noirs").setDescription(chess.subc.add.options.noirs)
+    );
+
+const _remove = (
+  s: SlashCommandSubcommandBuilder
+): SlashCommandSubcommandBuilder =>
+  s
+    .setName("remove")
+    .setDescription(chess.subc.remove.desc)
+    .addStringOption((o) =>
+      o
+        .setName("id")
+        .setDescription(chess.subc.remove.options.id)
+        .setRequired(true)
+    );
+
+const _get = (
+  g: SlashCommandSubcommandGroupBuilder
+): SlashCommandSubcommandGroupBuilder =>
+  g
+    .setName("get")
+    .setDescription(chess.subc.get.desc)
+    .addSubcommand((s) =>
+      s
+        .setName("user")
+        .setDescription(chess.subc.fetchUser.desc)
+        .addUserOption((o) =>
+          o
+            .setName("utilisateur")
+            .setDescription(chess.subc.fetchUser.options.membre)
+            .setRequired(true)
+        )
+    )
+    .addSubcommand((s) =>
+      s
+        .setName("game")
+        .setDescription(chess.subc.fetch.desc)
+        .addStringOption((o) =>
+          o
+            .setName("id")
+            .setDescription(chess.subc.fetch.options.id)
+            .setRequired(true)
+        )
+    );
 
 const ping = {
   data: new SlashCommandBuilder()
     .setName("chess")
-    .setDescription("Les commandes relatives aux échecs (le jeu là pas ta vie).")
-    .addSubcommand(make_gif),
-    // .addSubcommandGroup(chessDB)
+    .setDescription(chess.desc)
+    .addSubcommand(make_gif)
+    .addSubcommand(_add)
+    .addSubcommand(_remove)
+    .addSubcommandGroup(_get),
   execute,
 };
 
