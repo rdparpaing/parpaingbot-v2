@@ -5,7 +5,6 @@ import {
   SlashCommandSubcommandGroupBuilder,
 } from "discord.js";
 
-import makeGif from "./chess/makeGif.js";
 import add from "./chess/add.js";
 import remove from "./chess/remove.js";
 import fetch from "./chess/fetch.js";
@@ -18,9 +17,6 @@ async function execute(interaction: ChatInputCommandInteraction) {
   const sub = interaction.options.getSubcommand();
 
   switch (sub) {
-    case "make-gif":
-      await makeGif(interaction);
-      break;
     case "add":
       await add(interaction);
       break;
@@ -36,18 +32,6 @@ async function execute(interaction: ChatInputCommandInteraction) {
   }
 }
 
-const make_gif = (
-  s: SlashCommandSubcommandBuilder
-): SlashCommandSubcommandBuilder =>
-  s
-    .setName("make-gif")
-    .setDescription(chess.subc.makeGif.desc)
-    .addStringOption((o) =>
-      o
-        .setName("pgn")
-        .setDescription(chess.subc.makeGif.options.pgn)
-        .setRequired(true)
-    );
 const _add = (
   s: SlashCommandSubcommandBuilder
 ): SlashCommandSubcommandBuilder =>
@@ -120,15 +104,14 @@ const _get = (
         )
     );
 
-const ping = {
+const c = {
   data: new SlashCommandBuilder()
     .setName("chess")
     .setDescription(chess.desc)
-    .addSubcommand(make_gif)
     .addSubcommand(_add)
     .addSubcommand(_remove)
     .addSubcommandGroup(_get),
   execute,
 };
 
-export default ping;
+export default c;
